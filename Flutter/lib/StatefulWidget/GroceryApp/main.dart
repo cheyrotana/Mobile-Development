@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ui/groceries/grocery_list.dart';
-
+import './ui/Theme/theme.dart';
 
 void main() {
 
@@ -16,14 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Groceries',
-      theme: ThemeData.dark().copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 147, 229, 250),
-          brightness: Brightness.dark,
-          surface: const Color.fromARGB(255, 42, 51, 59),
-        ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60),
-      ),
+      theme: appTheme,
       home: const GroceryList(),
     );
   }

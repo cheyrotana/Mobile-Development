@@ -11,14 +11,17 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  void onCreate() {
+  void onCreate() async {
     // TODO-4 - Navigate to the form screen using the Navigator push
-    Navigator.push(
+    final newGrocery = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const NewItem(),
-      ),
+      MaterialPageRoute(builder: (context) => const NewItem()),
     );
+    if (newGrocery != null) {
+      setState(() {
+        dummyGroceryItems.add(newGrocery);
+      });
+    }
   }
 
   @override
@@ -39,7 +42,12 @@ class _GroceryListState extends State<GroceryList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Groceries'),
-        actions: [IconButton(onPressed: () => {onCreate()}, icon: const Icon(Icons.add))],
+        actions: [
+          IconButton(
+            onPressed: () => {onCreate()},
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: content,
     );
@@ -57,7 +65,7 @@ class GroceryTile extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: ListTile(
-        tileColor: Color.fromARGB(255, 60, 71, 74),
+        // tileColor: Color.fromARGB(255, 60, 71, 74),
         leading: CategoryContainer(color: grocery.category.color),
         title: Text(grocery.name),
         trailing: Text('${grocery.quantity}'),
