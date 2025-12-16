@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 
 final ThemeData appTheme = ThemeData.light().copyWith(
-  // Color scheme  
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color.fromARGB(255, 0, 150, 136),
-    brightness: Brightness.light,
-    surface: const Color.fromARGB(
-      255,
-      245,
-      245,
-      245,
-    ),
-  ),
 
   // Scaffold background
   scaffoldBackgroundColor: const Color.fromARGB(255, 250, 250, 250),
@@ -25,8 +14,8 @@ final ThemeData appTheme = ThemeData.light().copyWith(
 
   // ListTile theme
   listTileTheme: ListTileThemeData(
-    tileColor: Colors.white, // White background for tiles
-    textColor: Colors.black87, // Dark text
+    tileColor: Colors.white,
+    textColor: Colors.black87,
     shape: RoundedRectangleBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(8),

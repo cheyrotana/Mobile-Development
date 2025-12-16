@@ -42,8 +42,8 @@ class _NewItemState extends State<NewItem> {
 
   void onReset() {
     setState(() {
-      _nameController.text = '';
-      _quantityController.text = '';
+      _nameController.text = defautName;
+      _quantityController.text = defaultQuantity.toString();
       _selectedCategory = defaultCategory;
     });
   }
