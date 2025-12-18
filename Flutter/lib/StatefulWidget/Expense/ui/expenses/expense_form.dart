@@ -52,39 +52,59 @@ class _ExpenseFormState extends State<ExpenseForm> {
     );
   }
 
+  bool validateInput() {
+    String title = _titleController.text;
+    double? amount = double.tryParse(_amountController.text);
+    if (title.isEmpty) {
+      _showValidationError(
+        'Missing Title',
+        'Please enter a title for your expense.',
+      );
+      return false;
+    }
+
+    if (amount == null || amount.isNaN) {
+      _showValidationError(
+        'Invalid Amount',
+        'Please enter a valid number for the amount.',
+      );
+      return false;
+    }
+
+    if (amount <= 0) {
+      _showValidationError(
+        'Invalid Amount',
+        'Amount must be greater than zero.',
+      );
+      return false;
+    }
+
+    if (_selectedDate.isAfter(DateTime.now())) {
+      _showValidationError(
+        'Invalid Date',
+        'Cannot select future dates for expenses.',
+      );
+      return false;
+    }
+    return true;
+  }
+
   void onCreate() {
     String title = _titleController.text;
     DateTime date = _selectedDate;
     Category category = _selectedCategory;
-
-    if (title.isEmpty) {
-      _showValidationError('Missing Title', 'Please enter a title for your expense.');
-      return;
-    }
-
     double? amount = double.tryParse(_amountController.text);
-    if (amount == null || amount.isNaN) {
-      _showValidationError('Invalid Amount', 'Please enter a valid number for the amount.');
-      return;
-    }
 
-    if (amount <= 0) {
-      _showValidationError('Invalid Amount', 'Amount must be greater than zero.');
-      return;
-    }
-
-    if (_selectedDate.isAfter(DateTime.now())) {
-      _showValidationError('Invalid Date', 'Cannot select future dates for expenses.');
+    if (!validateInput()) {
       return;
     }
 
     Expense newExpense = Expense(
       title: title,
-      amount: amount,
+      amount: amount!,
       date: date,
       category: category,
     );
-
     widget.onExpenseCreate(newExpense);
 
     Navigator.pop(context);
