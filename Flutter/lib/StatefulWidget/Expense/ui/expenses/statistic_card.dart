@@ -1,42 +1,29 @@
 import 'package:flutter/material.dart';
 import '../../models/expense.dart';
 
-class StatisticCard extends StatefulWidget {
+class StatisticCard extends StatelessWidget {
   final List<Expense> expenses;
 
   const StatisticCard({super.key, required this.expenses});
 
-  @override
-  State<StatisticCard> createState() => _StatisticCardState();
-}
+  Map<Category, double> calculateCategoryTotals() {
+    Map<Category, double> totals = {};
 
-class _StatisticCardState extends State<StatisticCard> {
-  // Calculate total for each category
-  Map<Category, double> _calculateCategoryTotals() {
-    Map<Category, double> totals = {
-      Category.food: 0,
-      Category.travel: 0,
-      Category.leisure: 0,
-      Category.work: 0,
-    };
-
-    for (var expense in widget.expenses) {
+    for (var expense in expenses) {
       totals[expense.category] =
           (totals[expense.category] ?? 0) + expense.amount;
     }
-
     return totals;
   }
 
-  // Get icon for each category
-  IconData _getCategoryIcon(Category category) {
+  IconData getCategoryIcon(Category category) {
     switch (category) {
       case Category.food:
-        return Icons.restaurant;
+        return Icons.free_breakfast;
       case Category.travel:
-        return Icons.flight;
+        return Icons.travel_explore;
       case Category.leisure:
-        return Icons.movie;
+        return Icons.holiday_village;
       case Category.work:
         return Icons.work;
     }
@@ -44,10 +31,10 @@ class _StatisticCardState extends State<StatisticCard> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryTotals = _calculateCategoryTotals();
+    final categoryTotals = calculateCategoryTotals();
 
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -55,21 +42,17 @@ class _StatisticCardState extends State<StatisticCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Expense Summary',
+              'Summary',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ...Category.values.map((category) {
-              final total = categoryTotals[category] ?? 0;
+              final categoryTotal = categoryTotals[category] ?? 0;
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   children: [
-                    Icon(
-                      _getCategoryIcon(category),
-                      // color: _getCategoryColor(category),
-                      size: 28,
-                    ),
+                    Icon(getCategoryIcon(category), size: 28),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Text(
@@ -81,35 +64,16 @@ class _StatisticCardState extends State<StatisticCard> {
                       ),
                     ),
                     Text(
-                      '\$${total.toStringAsFixed(2)}',
-                      style: TextStyle(
+                      '\$${categoryTotal.toStringAsFixed(2)}',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        // color: _getCategoryColor(category),
                       ),
                     ),
                   ],
                 ),
               );
             }),
-            const Divider(height: 24, thickness: 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'TOTAL',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '\$${categoryTotals.values.reduce((a, b) => a + b).toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

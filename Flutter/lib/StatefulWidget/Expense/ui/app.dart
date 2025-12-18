@@ -53,28 +53,41 @@ class _AppState extends State<App> {
       body: Column(
         children: [
           StatisticCard(expenses: _expenses),
-          SizedBox(height: 10.0,),
-          ExpensesView(
-            expenses: _expenses,
-            onExpenseRemoved: (expense) {
-              setState(() {
-                _expenses.remove(expense);
-              });
-          
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 3),
-                  content: const Text('Expense deleted'),
-                  action: SnackBarAction(
-                    label: 'Undo',
-                    onPressed: () => onUndo(expense),
-                  ),
-                ),
-              );
-            },
+          SizedBox(height: 10.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Expenses',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
-        ] 
+          SizedBox(height: 10.0),
+          Expanded(
+            child: ExpensesView(
+              expenses: _expenses,
+              onExpenseRemoved: (expense) {
+                setState(() {
+                  _expenses.remove(expense);
+                });
+
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: const Duration(seconds: 3),
+                    content: const Text('Expense deleted'),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () => onUndo(expense),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
